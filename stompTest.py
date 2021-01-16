@@ -2,8 +2,8 @@
 import numpy as np
 
 # parameters of problem: k is sparsity and N is total dimension
-k = 2
-N = 8
+k = 4
+N = 32
 print('k = {}, N = {}\n'.format(k, N))
 
 # create a k-spare N dimensional vector
@@ -25,4 +25,14 @@ print('phi = '+str(phi)+'\n')
 
 # calculate y (vector of measurements)
 y = np.matmul(phi, x)
-print('y = '+str(y) +'\n')
+print('y = '+str(y)+'\n')
+
+# set up initial values for problem: x0 = 0, y0 = y
+x0 = np.zeros(N)
+y0 = y.copy()
+print('x0 = '+str(x0))
+print('y0 = '+str(y0)+'\n')
+
+# first redidual vector, r1 = phi^T y
+r1 = np.matmul(np.transpose(phi), y0)
+print('r1 = '+str(r1)+'\n')
