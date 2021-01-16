@@ -39,26 +39,39 @@ print('y0 = '+str(y0)+'\n')
 r0 = np.matmul(np.transpose(phi), y0)
 print('r0 = '+str(r0)+'\n')
 
+# create lists of vectors for step 0:
+X = [x0]
+Y = [y0]
+R = [r0]
+C = []
+Sigma = []
+J = []
+I = []
+Phi_I = []
+
 # calculate formal noise level and threshold for residual
-sigma1 = np.linalg.norm(r0)/math.sqrt(N)
-print('sigma1 = '+str(sigma1))
-tsig1 = sigma1*t
-print('t*sigma1 = '+str(tsig1)+'\n')
+Sigma.append(np.linalg.norm(R[-1])/math.sqrt(N))
+print('sigma1 = '+str(Sigma[-1]))
+
+# n.b. we should calculate t properly here
+
+tsig = Sigma[-1]*t
+print('t*sigma = '+str(tsig)+'\n')
 
 # take residual elements greater than the threshold, and note their indicies
-j1 = r0[r0 > tsig1]
-print('j1 = '+str(j1))
-i1 = np.arange(N)[r0 > tsig1]
-print('i1 = '+str(i1)+'\n')
+J.append(R[-1][R[-1] > tsig])
+print('j1 = '+str(J[-1]))
+I.append(np.arange(N)[r0 > tsig])
+print('i1 = '+str(I[-1])+'\n')
 
 # matrix phi_i1 is the columns in i1 or phi
-phi_i1 = np.array([phi[:,col_index] for col_index in i1]).transpose()
-print('phi_i1 = '+str(phi_i1)+'\n')
+Phi_I.append(np.array([phi[:,col_index] for col_index in I[-1]]).transpose())
+print('phi_i1 = '+str(Phi_I[-1])+'\n')
 
 # project y onto columns of phi belonging to the support I (phi_i1), giving new x estimate
-x1 = np.matmul(np.linalg.inv(np.matmul(phi_i1.transpose(), phi_i1)), phi_i1.transpose(), y)
-print('x1 = '+str(x1)+'\n')
+X.append(np.matmul(np.linalg.inv(np.matmul(Phi_I[-1].transpose(), Phi_I[-1])), Phi_I[-1].transpose(), y))
+print('x1 = '+str(X[-1])+'\n')
 
 # update residuals: r' = y - phi x_n
-r1 = y - np.matmul(phi, x1)
-print('r1 = '+str(r1)+'\n')
+R.append(y - np.matmul(phi, X[-1]))
+print('r1 = '+str(R[-1])+'\n')
