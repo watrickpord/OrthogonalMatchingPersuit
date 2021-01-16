@@ -1,10 +1,12 @@
 # test of stagewise orthogonal matching persuit (Donoho et al.)
 import numpy as np
+import math
 
-# parameters of problem: k is sparsity and N is total dimension
+# parameters of problem: k is sparsity and N is total dimension, t is threshold multiplier
 k = 4
 N = 32
-print('k = {}, N = {}\n'.format(k, N))
+t = 1.1
+print('k = {}, N = {}, t = {}\n'.format(k, N, t))
 
 # create a k-spare N dimensional vector
 x = np.random.rand(N)
@@ -36,3 +38,15 @@ print('y0 = '+str(y0)+'\n')
 # first redidual vector, r1 = phi^T y
 r1 = np.matmul(np.transpose(phi), y0)
 print('r1 = '+str(r1)+'\n')
+
+# calculate formal noise level and threshold for residual
+sigma1 = np.linalg.norm(r1)/math.sqrt(N)
+print('sigma1 = '+str(sigma1))
+tsig1 = sigma1*t
+print('t*sigma1 = '+str(tsig1)+'\n')
+
+# take residual elements greater than the threshold, and note their indicies
+j1 = r1[r1 > tsig1]
+print('j1 = '+str(j1))
+i1 = np.arange(N)[r1 > tsig1]
+print('i1 = '+str(i1))
