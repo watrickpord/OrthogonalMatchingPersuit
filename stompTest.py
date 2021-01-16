@@ -36,17 +36,29 @@ print('x0 = '+str(x0))
 print('y0 = '+str(y0)+'\n')
 
 # first redidual vector, r1 = phi^T y
-r1 = np.matmul(np.transpose(phi), y0)
-print('r1 = '+str(r1)+'\n')
+r0 = np.matmul(np.transpose(phi), y0)
+print('r0 = '+str(r0)+'\n')
 
 # calculate formal noise level and threshold for residual
-sigma1 = np.linalg.norm(r1)/math.sqrt(N)
+sigma1 = np.linalg.norm(r0)/math.sqrt(N)
 print('sigma1 = '+str(sigma1))
 tsig1 = sigma1*t
 print('t*sigma1 = '+str(tsig1)+'\n')
 
 # take residual elements greater than the threshold, and note their indicies
-j1 = r1[r1 > tsig1]
+j1 = r0[r0 > tsig1]
 print('j1 = '+str(j1))
-i1 = np.arange(N)[r1 > tsig1]
-print('i1 = '+str(i1))
+i1 = np.arange(N)[r0 > tsig1]
+print('i1 = '+str(i1)+'\n')
+
+# matrix phi_i1 is the columns in i1 or phi
+phi_i1 = np.array([phi[:,col_index] for col_index in i1]).transpose()
+print('phi_i1 = '+str(phi_i1)+'\n')
+
+# project y onto columns of phi belonging to the support I (phi_i1), giving new x estimate
+x1 = np.matmul(np.linalg.inv(np.matmul(phi_i1.transpose(), phi_i1)), phi_i1.transpose(), y)
+print('x1 = '+str(x1)+'\n')
+
+# update residuals: r' = y - phi x_n
+r1 = y - np.matmul(phi, x1)
+print('r1 = '+str(r1)+'\n')
