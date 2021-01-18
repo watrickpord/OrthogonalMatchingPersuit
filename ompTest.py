@@ -64,3 +64,9 @@ for n in range(k):
     R.append(y - np.matmul(P_i, y))
     print('\nNew residual = {}'.format(R[-1]))
     print('---------------------------------------------------------')
+
+# Print final output x estimate and original (ground truth) x
+print('Original x = \n'+str(x))
+
+x_est = [np.dot(y, column) for column in phi_cols.transpose()]
+print('\nEstimate x = \n'+str(x_est))
