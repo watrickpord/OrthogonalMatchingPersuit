@@ -32,10 +32,12 @@ print('y = '+str(y)+'\n')
 
 
 # ----------------------- OMP algorithm ------------------------
+# Step 1: initialise residuals with r_0 = y and colums set C = null
+R = [y]
+C = []
+
+# iteration...
 for n in range(k):
-    # Step 1: initialise residuals with r_0 = y and colums set C = null
-    R = [y]
-    C = []
     # Step 2: find the column what maximises projection onto residuals (y in first instance)
     max_projection = 0
     max_index = -1
