@@ -36,7 +36,6 @@ for n in range(k):
     # Step 1: initialise residuals with r_0 = y and colums set C = null
     R = [y]
     C = []
-
     # Step 2: find the column what maximises projection onto residuals (y in first instance)
     max_projection = 0
     max_index = -1
@@ -48,20 +47,18 @@ for n in range(k):
         max_index = i if (projection_i > max_projection) else max_index
         max_projection = projection_i if (max_index == i) else max_projection
     print('max_projection = {}, index = {}'.format(max_projection, max_index))
-
     # update list of column indicies with max_index
     C.append(max_index)
     print(C)
-
     # step 4: project residual onto columns of index C and subtract this new
     # estimate from the residual to get next step residual
     phi_cols = np.array([phi[:,col_index] for col_index in C]).transpose()
     print('\nNonzero Phi Cols')
     print(phi_cols)
     P_i = np.matmul(phi_cols, np.matmul(np.linalg.inv(np.matmul(phi_cols.transpose(), phi_cols)), phi_cols.transpose()))
-
-    print('\nPi = ')
-    print(P_i)
+    #print('\nP_i = ')
+    #print(P_i)
     # update residuals r' = y - P_i y
-    R.append(np.matmul(np.identity(N) - P_i, y))
+    R.append(y - np.matmul(P_i, y))
     print('\nNew residual = {}'.format(R[-1]))
+    print('---------------------------------------------------------')
