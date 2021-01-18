@@ -68,5 +68,7 @@ for n in range(k):
 # Print final output x estimate and original (ground truth) x
 print('Original x = \n'+str(x))
 
-x_est = [np.dot(y, column) for column in phi_cols.transpose()]
+phi_cols_head = phi_cols[0:k, 0:k]
+y_head = y[0:k]
+x_est = np.matmul(np.linalg.inv(phi_cols_head), y_head)
 print('\nEstimate x = \n'+str(x_est))
