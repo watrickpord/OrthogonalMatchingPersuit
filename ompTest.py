@@ -8,7 +8,7 @@ k = 2
 N = 16
 print('k = {}, N = {}\n'.format(k, N))
 
-# create a k-spare N dimensional vector
+# create a k-sparse N dimensional vector
 x = np.random.rand(N)
 random_indicies = np.random.choice(N, k, replace=False)
 for index in range(N):
